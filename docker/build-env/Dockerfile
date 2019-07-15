@@ -42,6 +42,13 @@ RUN curl -sL https://github.com/ocaml/opam/releases/download/2.0.3/opam-2.0.3-x8
 # Without this opam fails to compile OCaml for some reason. We don't need sandboxing inside a Docker container anyway.
 RUN su - vagrant -c 'opam init --reinit --bare --disable-sandboxing --yes --auto-setup'
 
+# Clone infer so that we can install OCaml stuff
+RUN su - vagrant -c 'git clone --depth 1 -b build-env https://github.com/j-piecuch/infer'
+
+# Install OCaml compiler and deps
+RUN su - vagrant -c 'cd infer && ./build-infer.sh --only-setup-opam'
+RUN su - vagrant -c 'rm -rf infer'
+
 ADD ./build-functions.sh /home/vagrant/build-functions.sh
 RUN echo '. ~/build-functions.sh' >> /home/vagrant/.bashrc
 

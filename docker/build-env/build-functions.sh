@@ -1,7 +1,5 @@
 setup () {
   pushd /vagrant
-  ./build-infer.sh --only-setup-opam &&
-  eval $(opam env) &&
   ./autogen.sh &&
   ./configure &&
   ./facebook-clang-plugins/clang/setup.sh 
